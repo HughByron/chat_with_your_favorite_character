@@ -1,5 +1,4 @@
-# chat_with_your_favorite_character
-和自己喜欢的角色聊天
+# 和自己喜欢的角色聊天
 
 本项目使用的是硅基流动平台提供的api，仅供学习交流使用。
 
