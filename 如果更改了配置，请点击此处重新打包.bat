@@ -6,3 +6,4 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+pause
