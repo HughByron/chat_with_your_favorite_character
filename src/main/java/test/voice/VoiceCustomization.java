@@ -20,6 +20,7 @@ public class VoiceCustomization {
 
     private static final Properties props = new Properties();
 
+    // 读取配置文件信息
     static {
         try (InputStream is = VoiceCustomization.class.getResourceAsStream("/config.properties")) {
             InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -29,20 +30,16 @@ public class VoiceCustomization {
         }
     }
 
-    private static final String API_KEY = props.getProperty("voice.api.key");
-    private static final String CONTEXT = props.getProperty("promoet");
-    private static final String VOICE_URL = props.getProperty("voice.url");
-
-    private static final int CHAT_COUNT_MAX = 20; //历史记录最大次数
-
-    //设置结束词
-    private static final String END_WORD1 = "拜拜";
-    private static final String END_WORD2 = "再见";
-
-    // 是否打印思考过程
-    private static final boolean IS_REASONING_CONTENT_PRINT = Boolean.parseBoolean(props.getProperty("is_reasoning_content_print"));
-
-    // 静音检测参数
+    // 设置配置文件信息
+    private static final String API_KEY = props.getProperty("voice.api.key"); // API-KEY
+    private static final String PROMOET = props.getProperty("promoet"); // 角色设定
+    private static final String VOICE_URL = props.getProperty("voice.url"); // 角色参考音频
+    private static final int CHAT_COUNT_MAX = 20; // 历史记录最大次数
+    private static final String END_WORD1 = props.getProperty("end_word1"); // 结束词1
+    private static final String END_WORD2 = props.getProperty("end_word2"); // 结束词2
+    private static final boolean IS_REASONING_CONTENT_PRINTF = Boolean.parseBoolean(props.getProperty("is_reasoning_content_printf")); // 是否打印思考过程
+    private static final boolean IS_USER_TEXT_PRINTF = Boolean.parseBoolean(props.getProperty("is_user_text_printf")); // 是否打印语音识别结果
+    private static final boolean IS_AI_RESPONSE_CONTENT_PRINTF = Boolean.parseBoolean(props.getProperty("is_ai_response_content_printf")); // 是否打印角色回复文本内容
     private static final double VOLUME_THRESHOLD = Double.parseDouble(props.getProperty("volume_threshold"));; // 音量阈值（根据环境调整）
     private static final long SILENCE_DURATION = Long.parseLong(props.getProperty("silence_duration"));;    // 静音持续时间（毫秒）
     private static  final long MAX_RECORD_TIME = Long.parseLong(props.getProperty("max_record_time"));;    // 最大录音时间（毫秒）
@@ -81,7 +78,9 @@ public class VoiceCustomization {
 
                 // 语音转文字
                 String userText = audioToText();
-                System.out.println("识别结果: " + userText);
+                if(IS_USER_TEXT_PRINTF){
+                    System.out.println("识别结果: " + userText);
+                }
 
                 // 检查终止条件
                 if (userText.contains(END_WORD1) || userText.contains(END_WORD2) ) {
@@ -103,7 +102,11 @@ public class VoiceCustomization {
                 // 调用AI对话（传入当前消息和历史）
                 String aiResponse = aiTalk(userMessage, messagesHistory).replaceAll("\\(.*?\\)", "")
                         .replaceAll("\\（.*?\\）", "");
-                System.out.println("语音回复: " + aiResponse);
+                // 是否打印语音回复文本内容
+                if(IS_AI_RESPONSE_CONTENT_PRINTF){
+                    System.out.println("语音回复: " + aiResponse);
+                }
+
 
                 // 创建并添加助理消息到历史
                 JsonObject assistantMessage = new JsonObject();
@@ -353,7 +356,7 @@ public class VoiceCustomization {
         // 创建系统消息
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
-        systemMessage.addProperty("content", CONTEXT);
+        systemMessage.addProperty("content", PROMOET);
 
         // 构建完整消息列表
         JsonArray messages = new JsonArray();
@@ -421,8 +424,8 @@ public class VoiceCustomization {
         if (!message.has("content")) {
             throw new IllegalStateException("message缺少content字段");
         }
-        // TODO:是否打印思考过程
-        if(IS_REASONING_CONTENT_PRINT) {
+        // 是否打印思考过程
+        if(IS_REASONING_CONTENT_PRINTF) {
             System.out.println(message.get("reasoning_content").getAsString()+"\n");
         }
         return message.get("content").getAsString();
