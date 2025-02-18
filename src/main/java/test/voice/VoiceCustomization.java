@@ -32,7 +32,7 @@ public class VoiceCustomization {
 
     // 设置配置文件信息
     private static final String API_KEY = props.getProperty("voice.api.key"); // API-KEY
-    private static final String PROMOET = props.getProperty("promoet"); // 角色设定
+    private static final String PROMPT = props.getProperty("prompt"); // 角色设定
     private static final String VOICE_URL = props.getProperty("voice.url"); // 角色参考音频
     private static final int CHAT_COUNT_MAX = 20; // 历史记录最大次数
     private static final String END_WORD1 = props.getProperty("end_word1"); // 结束词1
@@ -356,7 +356,7 @@ public class VoiceCustomization {
         // 创建系统消息
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
-        systemMessage.addProperty("content", PROMOET);
+        systemMessage.addProperty("content", PROMPT);
 
         // 构建完整消息列表
         JsonArray messages = new JsonArray();
