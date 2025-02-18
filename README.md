@@ -6,7 +6,7 @@
 1.在硅基流动平台上复制下自己的api-key,然后将该api-key填入到配置文件config.properties文件中的voice.api.key=中。
 
 2.硅基流动平台的文档中心->API手册->上传参考音频->try it中，上传角色的参考音频，
-然后将返回结果中的url填入到项目中的config.properties文件中,最后修改promoet中的内容。需要注意的是，在上传参考音频时，customName一栏中，不能使用中文。
+然后将返回结果中的url填入到项目中的config.properties文件中,最后修改prompt中的内容。需要注意的是，在上传参考音频时，customName一栏中，不能使用中文。
 
 3.点击项目目录下的 如果更改了配置，请点击此处重新打包.bat 文件，完成打包操作。（如后续使用时未更改配置文件，则不需要此操作）
 
