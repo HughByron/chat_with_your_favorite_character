@@ -1,8 +1,8 @@
 @echo off
-echo 正在打包项目...
+echo package start...
 call mvn clean package
 if %errorlevel% neq 0 (
-    echo 错误：项目打包失败！
+    echo error：package failed!
     pause
     exit /b 1
 )
