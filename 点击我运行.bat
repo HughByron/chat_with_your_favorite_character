@@ -1,4 +1,5 @@
 @echo off
+mode con cols=120 lines=20
 cd /d "target\" || exit
 if not exist voiceCustomization-1.0-SNAPSHOT.jar (
     echo 错误：未找到jar文件！
